@@ -16,10 +16,10 @@ pipeline {
 
         stage('Deploy Container') {
             steps {
-                // The || exit 0 stops the build from breaking if the container doesn't exist yet
+                // Using '|| rem' prevents Windows cmd from crashing if the container doesn't exist
                 bat '''
-                docker stop vite-container || exit 0
-                docker rm vite-container || exit 0
+                docker stop vite-container >nul 2>&1 || rem
+                docker rm vite-container >nul 2>&1 || rem
                 docker run -d -p 8081:80 --name vite-container vite-app
                 '''
             }
